@@ -4,7 +4,18 @@
  * Manages the data of the application.
  */
 class Model {
-  constructor() {}
+  constructor() {
+    this.todos = [];
+  }
+
+  addTodo(item) {
+    this.todos.push(item);
+  }
+
+  deleteTodo(id) {
+    const index = this.todos.findIndex(item => item.id === id);
+    this.todos.splice(index, 1);
+  }
 }
 
 /**
