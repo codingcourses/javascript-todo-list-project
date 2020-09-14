@@ -15,59 +15,14 @@ button {
 /* CUSTOM STYLES */
 #root {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-h1 {
-  text-transform: uppercase;
-  font-weight: 200;
-  margin-bottom: 10px;
-}
-
-.container {
-  width: 450px;
-  margin: auto;
-}
-
-.container-input {
-  display: flex;
-  min-height: 40px;
-}
-
-.item-input {
-  flex: 1;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 1rem;
-  font-weight: 100;
-}
-
-.add-button {
-  width: 75px;
-  margin-left: 10px;
   font-weight: 200;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0 0 0;
+.uk-text-large {
+  font-size: 2rem;
 }
 
-li {
-  display: flex;
-  min-height: 50px;
-  padding: 10px;
-  background-color: #E0E0E0;
+.uk-input,
+.uk-button {
   border-radius: 5px;
-  align-items: center;
-}
-
-.item-text {
-  flex: 1;
-  padding-left: 10px;
-}
-
-.fa {
-  margin-left: 5px;
-  margin-right: 5px;
 }
