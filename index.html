@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Todo List Project</title>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/8bf8c74332.css" />
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="container">
+        <h1>Todo List</h1>
+        <div class="container-input">
+          <input id="item-input" class="item-input" type="text" />
+          <button id="add-button" class="add-button">Add</button>
+        </div>
+        <ul>
+          <li>
+              <span id="item-text" class="item-text">This is some text</span>
+              <i id="item-check" class="fa fa-check fa-lg"></i>
+              <i id="item-delete" class="fa fa-trash fa-lg"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
