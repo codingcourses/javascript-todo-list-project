@@ -23,6 +23,8 @@ button {
 }
 
 .uk-input,
-.uk-button {
+.uk-button,
+.uk-checkbox,
+.uk-card {
   border-radius: 5px;
 }
