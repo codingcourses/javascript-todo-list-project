@@ -28,3 +28,7 @@ button {
 .uk-card {
   border-radius: 5px;
 }
+
+#empty-state {
+  display: none;
+}

@@ -5,7 +5,7 @@
  */
 class Model {
   constructor() {
-    this.items = [];
+    this.items = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
   }
 
   addItem(item) {
@@ -31,6 +31,10 @@ class Model {
     this.onChange(this.items);
   }
 
+  saveItems() {
+    localStorage.setItem('todos', JSON.stringify(this.items));
+  }
+
   bindOnChange(onChange) {
     this.onChange = onChange;
   }
@@ -46,6 +50,7 @@ class View {
     this.textInput = this.getElement('#text-input');
     this.addButton = this.getElement('#add-button');
     this.itemsList = this.getElement('#items-list');
+    this.emptyState = this.getElement('#empty-state');
   }
 
   getElement(selector) {
@@ -74,7 +79,15 @@ class View {
   }
 
   updateItemsList(items) {
+    if (!items.length) {
+      this.itemsList.style.display = 'none';
+      this.emptyState.style.display = 'block';
+      return;
+    }
+
     this.itemsList.innerHTML = '';
+    this.itemsList.style.display = 'block';
+    this.emptyState.style.display = 'none';
 
     for (const item of items) {
       const li = document.createElement('li');
@@ -135,10 +148,13 @@ class Controller {
     this.view.bindAddItem(this.onAddItem);
     this.view.bindOnDelete(this.onDeleteItem);
     this.view.bindOnToggle(this.onToggleItem);
+
+    this.onChange(this.model.items);
   }
 
   onChange = items => {
     this.view.updateItemsList(items);
+    this.model.saveItems();
   };
 
   onAddItem = text => {
