@@ -24,24 +24,14 @@
           <div class="uk-text-large uk-text-center uk-text-uppercase">Todo List</div>
           <div class="uk-grid uk-grid-small uk-margin-medium-top">
             <div class="uk-width-expand">
-              <input class="uk-input" type="text" />
+              <input id="text-input" class="uk-input" type="text" />
             </div>
             <div class="uk-width-auto">
-              <button class="uk-button uk-button-primary">Add</button>
+              <button id="add-button" class="uk-button uk-button-primary">Add</button>
             </div>
           </div>
 
-          <ul class="uk-list uk-margin-medium-top">
-            <li class="uk-card uk-card-default uk-card-body uk-card-small uk-flex">
-              <div class="uk-margin-small-right">
-                <input class="uk-checkbox" type="checkbox">
-              </div>
-              <div class="uk-width-expand">Text</div>
-              <div>
-                <a uk-icon="trash"></a>
-              </div>
-            </li>
-          </ul>
+          <ul id="items-list" class="uk-list uk-margin-medium-top"></ul>
         </div>
       </div>
     </div>
