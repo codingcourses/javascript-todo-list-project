@@ -13,7 +13,6 @@ model-view-controller (MVC) design pattern.
 
 These are specific topics covered in this project:
 
-
 - `localStorage`
 - [UIkit](https://getuikit.com/) front-end framework
 - MVC design pattern
