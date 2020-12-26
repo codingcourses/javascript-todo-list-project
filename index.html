@@ -7,39 +7,25 @@
 
     <title>Todo List Project</title>
 
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="styles.css" />
 
     <!-- UIkit JS -->
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/js/uikit-icons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/js/uikit-icons.min.js"></script>
 
-    <link rel="stylesheet" href="styles.min.css" />
+    <!-- UUID JS -->
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
   </head>
 
   <body>
-    <div id="root">
-      <div class="uk-position-top-center">
-        <div class="uk-width-large uk-margin-large-top uk-margin-small-left uk-margin-small-bottom uk-margin-small-right">
-          <div class="uk-text-large uk-text-center uk-text-uppercase">Todo List</div>
-          <div class="uk-grid uk-grid-small uk-margin-medium-top">
-            <div class="uk-width-expand">
-              <input id="text-input" class="uk-input" type="text" />
-            </div>
-            <div class="uk-width-auto">
-              <button id="add-button" class="uk-button uk-button-primary">Add</button>
-            </div>
-          </div>
-
-          <div id="empty-state" class="uk-margin-medium-top uk-text-medium uk-text-center">
-            You have not yet added any todo items.
-          </div>
-
-          <ul id="items-list" class="uk-list uk-margin-medium-top"></ul>
-        </div>
+    <div class="container">
+      <div class="inner">
+        <div class="title">todo list</div>
+        <input id="text-input" class="text-input" type="text" placeholder="What do you need to do?"/>
+        <ul id="list" class="list"></ul>
+        <div id="empty-state" class="empty-state">You have no todo list items.</div>
       </div>
     </div>
-
-    <script src="script.min.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

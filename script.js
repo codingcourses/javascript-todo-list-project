@@ -1,181 +1,176 @@
-/**
- * @class Model
- *
- * Manages the data of the application.
- */
 class Model {
+  #data;
+  #onChange;
+
   constructor() {
-    this.items = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
+    this.#data = localStorage.getItem(LOCAL_STORAGE_KEY)
+      ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+      : [];
+    this.#onChange = () => {};
   }
 
   addItem(item) {
-    this.items.push(item);
-    this.onChange(this.items);
+    this.#data.push({
+      id: uuidv4(),
+      ...item,
+    });
+    this.#onChange(this.#data);
   }
 
   deleteItem(id) {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.#data.findIndex(item => item.id === id);
     if (index === -1) {
       return;
     }
-    this.items.splice(index, 1);
-    this.onChange(this.items);
+    this.#data.splice(index, 1);
+    this.#onChange(this.#data);
   }
 
   toggleItem(id) {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.#data.findIndex(item => item.id === id);
     if (index === -1) {
       return;
     }
-    this.items[index].completed = !this.items[index].completed;
-    this.onChange(this.items);
+    this.#data[index].completed = !this.#data[index].completed;
+    this.#onChange(this.#data);
   }
 
-  saveItems() {
-    localStorage.setItem('todos', JSON.stringify(this.items));
+  save() {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.#data));
   }
 
-  bindOnChange(onChange) {
-    this.onChange = onChange;
+  bindOnChange(handler) {
+    this.#onChange = handler;
+  }
+
+  initialize() {
+    this.#onChange(this.#data);
   }
 }
 
-/**
- * @class View
- *
- * Visual representation of the model.
- */
 class View {
+  #textInput;
+  #list;
+  #emptyState;
+  #onToggle;
+  #onDelete;
+
   constructor() {
-    this.textInput = this.getElement('#text-input');
-    this.addButton = this.getElement('#add-button');
-    this.itemsList = this.getElement('#items-list');
-    this.emptyState = this.getElement('#empty-state');
+    this.#textInput = View.getElement('#text-input');
+    this.#list = View.getElement('#list');
+    this.#emptyState = View.getElement('#empty-state');
+    this.#onToggle = () => {};
+    this.#onDelete = () => {};
   }
 
-  getElement(selector) {
-    const element = document.querySelector(selector);
-    return element;
+  static getElement(selector) {
+    const elem = document.querySelector(selector);
+    return elem;
   }
 
   bindAddItem(handler) {
-    this.addButton.addEventListener('click', event => {
-      if (!this.textInput.value) {
-        return;
+    this.#textInput.addEventListener('keypress', event => {
+      if (event.key === 'Enter' || event.keyCode === 12 || event.which === 12) {
+        const value = this.#textInput.value;
+        handler(value);
+        this.#textInput.value = '';
       }
-
-      handler(this.textInput.value);
-
-      this.textInput.value = '';
     });
   }
 
-  bindOnDelete(onDelete) {
-    this.onDelete = onDelete;
+  bindToggleItem(handler) {
+    this.#onToggle = handler;
   }
 
-  bindOnToggle(onToggle) {
-    this.onToggle = onToggle;
+  bindDeleteItem(handler) {
+    this.#onDelete = handler;
   }
 
-  updateItemsList(items) {
+  updateList(items) {
+    this.#list.innerHTML = '';
+
     if (!items.length) {
-      this.itemsList.style.display = 'none';
-      this.emptyState.style.display = 'block';
+      this.#emptyState.style.display = 'block';
       return;
     }
 
-    this.itemsList.innerHTML = '';
-    this.itemsList.style.display = 'block';
-    this.emptyState.style.display = 'none';
+    this.#emptyState.style.display = 'none';
 
     for (const item of items) {
       const li = document.createElement('li');
-      li.setAttribute('class', 'uk-card uk-card-default uk-card-body uk-card-small uk-flex');
-
-      const divCheckbox = document.createElement('div');
-      divCheckbox.setAttribute('class', 'uk-margin-small-right');
+      li.setAttribute('class', 'item');
 
       const checkbox = document.createElement('input');
-      checkbox.setAttribute('class', 'uk-checkbox');
+      checkbox.setAttribute('class', 'item-checkbox');
       checkbox.setAttribute('type', 'checkbox');
-      checkbox.addEventListener('click', event => {
-        if (this.onToggle) {
-          this.onToggle(item.id);
+      checkbox.checked = item.completed;
+      checkbox.addEventListener('click', () => {
+        if (this.#onToggle) {
+          this.#onToggle(item.id);
         }
       });
 
-      const divText = document.createElement('div');
-      divText.setAttribute('class', 'uk-width-expand');
-      divText.textContent = item.text;
+      const text = document.createElement('div');
+      text.setAttribute('class', 'item-text');
+      text.textContent = item.text;
       if (item.completed) {
-        divText.style.textDecoration = 'line-through';
+        text.style.textDecoration = 'line-through';
       }
 
-      const divDeleteButton = document.createElement('div');
-      const deleteButton = document.createElement('a');
+      const deleteButton = document.createElement('span');
+      deleteButton.setAttribute('class', 'item-delete');
       deleteButton.setAttribute('uk-icon', 'trash');
-      deleteButton.addEventListener('click', event => {
-        if (this.onDelete) {
-          this.onDelete(item.id);
+      deleteButton.addEventListener('click', () => {
+        if (this.#onDelete) {
+          this.#onDelete(item.id);
         }
       });
 
-      divCheckbox.appendChild(checkbox);
-      divDeleteButton.appendChild(deleteButton);
-      li.appendChild(divCheckbox);
-      li.appendChild(divText);
-      li.appendChild(divDeleteButton);
-      this.itemsList.appendChild(li);
+      li.append(checkbox, text, deleteButton);
+      this.#list.append(li);
     }
   }
 }
 
-/**
- * @class Controller
- *
- * Links the model and the view.
- *
- * @param model
- * @param view
- */
 class Controller {
+  #model;
+  #view;
+
   constructor(model, view) {
-    this.model = model;
-    this.view = view;
+    this.#model = model;
+    this.#view = view;
 
-    this.model.bindOnChange(this.onChange);
-    this.view.bindAddItem(this.onAddItem);
-    this.view.bindOnDelete(this.onDeleteItem);
-    this.view.bindOnToggle(this.onToggleItem);
+    this.#view.bindAddItem(this.onAddItem);
+    this.#view.bindToggleItem(this.onToggleItem);
+    this.#view.bindDeleteItem(this.onDeleteItem);
 
-    this.onChange(this.model.items);
+    this.#model.bindOnChange(this.onItemsChange);
+
+    this.#model.initialize();
   }
 
-  onChange = items => {
-    this.view.updateItemsList(items);
-    this.model.saveItems();
-  };
+  onAddItem = value => {
+    if (!value) {
+      return;
+    }
 
-  onAddItem = text => {
-    this.model.addItem({
-      id: generateID(),
+    const item = {
+      text: value,
       completed: false,
-      text,
-    });
+    };
+    this.#model.addItem(item);
+  };
+
+  onToggleItem = id => this.#model.toggleItem(id);
+
+  onDeleteItem = id => this.#model.deleteItem(id);
+
+  onItemsChange = items => {
+    this.#view.updateList(items);
+    this.#model.save();
   }
-
-  onDeleteItem = id => {
-    this.model.deleteItem(id);
-  };
-
-  onToggleItem = id => {
-    this.model.toggleItem(id);
-  };
 }
+
+const LOCAL_STORAGE_KEY = 'TodoListProject';
 
 const app = new Controller(new Model(), new View());
-
-function generateID() {
-  return Math.random().toString(36).substr(2, 9);
-}

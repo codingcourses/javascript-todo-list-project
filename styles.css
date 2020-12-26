@@ -1,33 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300');
+
 /* Set core body defaults */
 body {
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  margin: 0;
+  font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: linear-gradient(to bottom right, #396ea0, #63b793);
 }
 
-/* Inherit fonts for buttons */
-button {
+/* Inherit fonts for input */
+input {
   font: inherit;
 }
 
-/* CUSTOM STYLES */
-#root {
-  font-weight: 200;
+/* Reset ul, li */
+ul, li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
 }
 
-.uk-text-large {
+/* Todo List Project Styles */
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+.inner {
+  width: 500px;
+}
+
+.title {
+  text-align: center;
+  font-size: 4rem;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.text-input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  width: 100%;
   font-size: 2rem;
+  transition: all 0.3s ease 0s;
 }
 
-.uk-input,
-.uk-button,
-.uk-checkbox,
-.uk-card {
-  border-radius: 5px;
+.text-input::placeholder {
+  color: #d9d9d9;
 }
 
-#empty-state {
+.list {
+  margin-top: 2rem;
+}
+
+.item {
+  display: flex;
+  padding: 2rem;
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.item-checkbox {
+  margin: 1rem 1rem 1rem 0;
+  cursor: pointer;
+}
+
+.item-text {
+  flex: 1;
+  overflow-x: hidden;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.item-delete {
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.empty-state {
+  color: #fff;
+  font-size: 1.25rem;
+  text-align: center;
   display: none;
 }
